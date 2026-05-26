@@ -1,0 +1,65 @@
+.app-shell
+  display: flex
+  height: 100vh
+  overflow: hidden
+
+.sidebar
+  width: 220px
+  min-width: 220px
+  background: #1e2130
+  color: #c8cdd8
+  display: flex
+  flex-direction: column
+  overflow-y: auto
+  flex-shrink: 0
+
+.sidebar-header
+  padding: 1.25rem 1rem 1rem
+  border-bottom: 1px solid #2e3347
+
+  .sidebar-logo
+    display: block
+    font-size: 1.1rem
+    font-weight: 700
+    color: #ffffff
+    letter-spacing: 0.02em
+
+  small
+    font-size: 0.72rem
+
+.sidebar-nav
+  padding: 0.5rem 0 1rem
+
+.nav-category
+  margin-top: 0.75rem
+
+  .nav-category-label
+    display: block
+    padding: 0.25rem 1rem
+    font-size: 0.68rem
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 0.08em
+    color: #6c7a94
+
+  .nav-link
+    padding: 0.3rem 1rem 0.3rem 1.5rem
+    color: #a8b2c4
+    font-size: 0.875rem
+    border-radius: 0
+    transition: background 0.15s, color 0.15s
+
+    &:hover
+      color: #ffffff
+      background: #2a3147
+
+    &.active
+      color: #ffffff
+      background: #3b4f82
+      font-weight: 500
+
+.main-content
+  flex: 1
+  overflow-y: auto
+  padding: 2rem
+  background: #f8f9fa

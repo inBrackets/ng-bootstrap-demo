@@ -1,0 +1,53 @@
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+
+@Component({
+  selector: 'app-rating-demo',
+  imports: [FormsModule, NgbRatingModule],
+  template: `
+    <h2 class="demo-title">Rating</h2>
+    <p class="text-muted mb-4">Star rating widget with support for custom icons and readonly mode.</p>
+
+    <h5>Basic Rating</h5>
+    <div class="mb-4">
+      <ngb-rating [(rate)]="rate" [max]="5"></ngb-rating>
+      <p class="text-muted small mt-1">Rating: {{ rate }}</p>
+    </div>
+
+    <h5>Custom max</h5>
+    <div class="mb-4">
+      <ngb-rating [(rate)]="rate2" [max]="10"></ngb-rating>
+      <p class="text-muted small mt-1">Rating: {{ rate2 }}/10</p>
+    </div>
+
+    <h5>Read-only</h5>
+    <div class="mb-4">
+      <ngb-rating [rate]="3.5" [max]="5" [readonly]="true"></ngb-rating>
+      <p class="text-muted small mt-1">Fixed at 3.5 stars</p>
+    </div>
+
+    <h5>Custom star template</h5>
+    <div class="mb-4">
+      <ngb-rating [(rate)]="rate3" [max]="5">
+        <ng-template let-fill="fill" let-index="index">
+          <span [class.filled]="fill === 100" [class.partial]="fill > 0 && fill < 100" class="custom-star">
+            {{ fill === 100 ? '★' : '☆' }}
+          </span>
+        </ng-template>
+      </ngb-rating>
+      <p class="text-muted small mt-1">Rating: {{ rate3 }}</p>
+    </div>
+
+    <h5>Disabled</h5>
+    <div>
+      <ngb-rating [rate]="2" [max]="5" [disabled]="true"></ngb-rating>
+    </div>
+  `,
+  styles: [`:host { display: block; } .custom-star { font-size: 1.5rem; color: #ffc107; cursor: pointer; }`]
+})
+export class RatingDemo {
+  rate = 3;
+  rate2 = 7;
+  rate3 = 4;
+}

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx ng *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/@ng-bootstrap/ng-bootstrap/package.json'\\).version\\)\")",
+      "Bash(curl -s http://localhost:4200)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(node *)",
+      "Bash(npx playwright *)",
+      "Bash(python3 *)",
+      "Bash(curl -s \"http://localhost:4200\")",
+      "Read(//c/Program Files/Google/Chrome/Application//**)",
+      "Read(//c/Program Files \\(x86\\)/Microsoft/Edge/Application//**)",
+      "Bash(xargs grep -l \"NgbAlert\")",
+      "Bash(xargs -I{} sh -c 'echo \"=== {} ===\" && cat \"{}\"')",
+      "Bash(npm run *)"
+    ]
+  }
+}

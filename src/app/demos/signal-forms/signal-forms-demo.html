@@ -1,0 +1,132 @@
+<h2 class="demo-title">Signal Forms</h2>
+<p class="text-muted mb-4">
+  Form state managed entirely with <code>signal()</code> and <code>computed()</code> —
+  no <code>FormControl</code> or <code>NgModel</code> required.
+</p>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <h5>Registration Form</h5>
+    <div class="card">
+      <div class="card-body">
+
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input
+            class="form-control"
+            [class.is-invalid]="nameError()"
+            [class.is-valid]="nameTouched() && !nameError()"
+            [value]="name()"
+            (input)="name.set($any($event.target).value)"
+            (blur)="nameTouched.set(true)"
+            placeholder="Your name">
+          @if (nameError()) {
+            <div class="invalid-feedback">{{ nameError() }}</div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            class="form-control"
+            [class.is-invalid]="emailError()"
+            [class.is-valid]="emailTouched() && !emailError()"
+            [value]="email()"
+            (input)="email.set($any($event.target).value)"
+            (blur)="emailTouched.set(true)"
+            placeholder="you@example.com">
+          @if (emailError()) {
+            <div class="invalid-feedback">{{ emailError() }}</div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Role</label>
+          <select
+            class="form-select"
+            [value]="role()"
+            (change)="role.set($any($event.target).value)">
+            @for (r of roles; track r) {
+              <option [value]="r">{{ r }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Bio <span class="text-muted small">({{ bioLength() }}/200)</span></label>
+          <textarea
+            class="form-control"
+            rows="3"
+            maxlength="200"
+            [value]="bio()"
+            (input)="bio.set($any($event.target).value)"
+            placeholder="Tell us about yourself..."></textarea>
+        </div>
+
+        <div class="mb-4 form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="subscribeCheck"
+            [checked]="subscribe()"
+            (change)="subscribe.set($any($event.target).checked)">
+          <label class="form-check-label" for="subscribeCheck">Subscribe to newsletter</label>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button
+            class="btn btn-primary"
+            [disabled]="!isValid()"
+            (click)="submit()">
+            Submit
+          </button>
+          <button class="btn btn-outline-secondary" (click)="reset()">Reset</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <h5>Live Signal State</h5>
+    <div class="card signal-preview mb-3">
+      <div class="card-body">
+        <div class="signal-row">
+          <span class="signal-key">name()</span>
+          <span class="signal-value">{{ name() || '—' }}</span>
+        </div>
+        <div class="signal-row">
+          <span class="signal-key">email()</span>
+          <span class="signal-value">{{ email() || '—' }}</span>
+        </div>
+        <div class="signal-row">
+          <span class="signal-key">role()</span>
+          <span class="signal-value">{{ role() }}</span>
+        </div>
+        <div class="signal-row">
+          <span class="signal-key">bioLength()</span>
+          <span class="signal-value">{{ bioLength() }}</span>
+        </div>
+        <div class="signal-row">
+          <span class="signal-key">subscribe()</span>
+          <span class="signal-value">{{ subscribe() }}</span>
+        </div>
+        <div class="signal-row">
+          <span class="signal-key">isValid()</span>
+          <span class="signal-value" [class.text-success]="isValid()" [class.text-danger]="!isValid()">
+            {{ isValid() }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    @if (result()) {
+      <h5>Submitted Data</h5>
+      <div class="card border-success">
+        <div class="card-body">
+          <pre class="mb-0 small">{{ result() | json }}</pre>
+        </div>
+      </div>
+    }
+  </div>
+</div>

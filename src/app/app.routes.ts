@@ -20,4 +20,5 @@ export const routes: Routes = [
   { path: 'toast', loadComponent: () => import('./demos/toast/toast-demo').then(m => m.ToastDemo) },
   { path: 'tooltip', loadComponent: () => import('./demos/tooltip/tooltip-demo').then(m => m.TooltipDemo) },
   { path: 'typeahead', loadComponent: () => import('./demos/typeahead/typeahead-demo').then(m => m.TypeaheadDemo) },
+  { path: 'signal-forms', loadComponent: () => import('./demos/signal-forms/signal-forms-demo').then(m => m.SignalFormsDemo) },
 ];

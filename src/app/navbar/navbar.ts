@@ -56,6 +56,7 @@ export class Navbar {
         { label: 'Datepicker', route: '/datepicker', icon: 'bi-calendar3' },
         { label: 'Timepicker', route: '/timepicker', icon: 'bi-clock' },
         { label: 'Typeahead', route: '/typeahead', icon: 'bi-search' },
+        { label: 'Signal Forms', route: '/signal-forms', icon: 'bi-lightning-charge' },
       ]
     },
   ];

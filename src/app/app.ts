@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap';
 
 interface NavItem { label: string; route: string; icon: string; }
 interface NavCategory { name: string; items: NavItem[]; }
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgbDropdown, NgbDropdownMenu, NgbDropdownToggle, NgbDropdownItem],
   templateUrl: './app.html',
   styleUrl: './app.sass'
 })
 export class App {
+  navbarOpen = false;
   categories: NavCategory[] = [
     {
       name: 'Layout',

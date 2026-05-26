@@ -1,29 +1,36 @@
 <div class="app-shell">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <span class="sidebar-logo">ng-bootstrap</span>
-      <small class="text-muted">Component Demo</small>
+  <nav class="navbar navbar-expand-lg top-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        ng-bootstrap
+        <small class="navbar-subtitle">Component Demo</small>
+      </a>
+      <button class="navbar-toggler" type="button" (click)="navbarOpen = !navbarOpen">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [class.show]="navbarOpen">
+        <ul class="navbar-nav">
+          @for (cat of categories; track cat.name) {
+            <li class="nav-item" ngbDropdown>
+              <a class="nav-link dropdown-toggle" ngbDropdownToggle>{{ cat.name }}</a>
+              <ul class="dropdown-menu" ngbDropdownMenu>
+                @for (item of cat.items; track item.route) {
+                  <li>
+                    <a class="dropdown-item"
+                       [routerLink]="item.route"
+                       routerLinkActive="active"
+                       ngbDropdownItem>
+                      <i class="bi {{ item.icon }} me-2"></i>{{ item.label }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            </li>
+          }
+        </ul>
+      </div>
     </div>
-    <nav class="sidebar-nav">
-      @for (cat of categories; track cat.name) {
-        <div class="nav-category">
-          <span class="nav-category-label">{{ cat.name }}</span>
-          <ul class="nav flex-column">
-            @for (item of cat.items; track item.route) {
-              <li class="nav-item">
-                <a class="nav-link"
-                   [routerLink]="item.route"
-                   routerLinkActive="active">
-                  <i class="bi {{ item.icon }}"></i>
-                  {{ item.label }}
-                </a>
-              </li>
-            }
-          </ul>
-        </div>
-      }
-    </nav>
-  </aside>
+  </nav>
   <main class="main-content">
     <router-outlet />
   </main>

@@ -4,56 +4,8 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-popover-demo',
   imports: [NgbPopoverModule],
-  template: `
-    <h2 class="demo-title">Popover</h2>
-    <p class="text-muted mb-4">Add rich, contextual overlays to any element.</p>
-
-    <h5>Placements</h5>
-    <div class="mb-4 d-flex gap-2 flex-wrap">
-      @for (pos of placements; track pos) {
-        <button type="button" class="btn btn-outline-secondary"
-          [ngbPopover]="'Popover on ' + pos" [placement]="pos" [popoverTitle]="pos">
-          {{ pos }}
-        </button>
-      }
-    </div>
-
-    <h5>Custom content template</h5>
-    <div class="mb-4">
-      <button type="button" class="btn btn-info"
-        [ngbPopover]="richContent" popoverTitle="Rich Popover">
-        Click for rich content
-      </button>
-      <ng-template #richContent>
-        <div>
-          <p class="mb-1"><strong>Custom HTML content</strong></p>
-          <ul class="mb-0 ps-3">
-            <li>Item one</li>
-            <li>Item two</li>
-            <li>Item three</li>
-          </ul>
-        </div>
-      </ng-template>
-    </div>
-
-    <h5>Triggers</h5>
-    <div class="mb-4 d-flex gap-3 flex-wrap">
-      <button type="button" class="btn btn-primary"
-        ngbPopover="Triggered on click" popoverTitle="Click trigger" triggers="click">
-        Click trigger
-      </button>
-      <button type="button" class="btn btn-success"
-        ngbPopover="Triggered on hover" popoverTitle="Hover trigger" triggers="mouseenter:mouseleave">
-        Hover trigger
-      </button>
-      <button type="button" class="btn btn-warning"
-        ngbPopover="Manually controlled" popoverTitle="Manual" triggers="manual" #p="ngbPopover"
-        (click)="p.toggle()">
-        Manual toggle
-      </button>
-    </div>
-  `,
-  styles: [`:host { display: block; }`]
+  templateUrl: './popover-demo.html',
+  styleUrl: './popover-demo.sass'
 })
 export class PopoverDemo {
   placements = ['top', 'bottom', 'start', 'end', 'top-start', 'top-end'];

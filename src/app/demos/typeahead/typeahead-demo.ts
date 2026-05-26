@@ -19,39 +19,8 @@ const COUNTRIES = [
 @Component({
   selector: 'app-typeahead-demo',
   imports: [FormsModule, NgbTypeaheadModule],
-  template: `
-    <h2 class="demo-title">Typeahead</h2>
-    <p class="text-muted mb-4">Autocomplete / typeahead input powered by an Observable.</p>
-
-    <h5>Basic (static list)</h5>
-    <div class="mb-4" style="max-width: 400px">
-      <input type="text" class="form-control" [(ngModel)]="model1"
-        [ngbTypeahead]="search" placeholder="Type a country name..."
-        [resultFormatter]="formatter" [inputFormatter]="formatter" />
-      <p class="text-muted small mt-1">Selected: {{ model1 }}</p>
-    </div>
-
-    <h5>With result template</h5>
-    <div class="mb-4" style="max-width: 400px">
-      <input type="text" class="form-control" [(ngModel)]="model2"
-        [ngbTypeahead]="search" placeholder="Type a country..."
-        [resultTemplate]="rt" />
-      <ng-template #rt let-r="result" let-t="term">
-        <span>🌍 </span>
-        <ngb-highlight [result]="r" [term]="t"></ngb-highlight>
-      </ng-template>
-      <p class="text-muted small mt-1">Selected: {{ model2 }}</p>
-    </div>
-
-    <h5>With min length 2</h5>
-    <div style="max-width: 400px">
-      <input type="text" class="form-control" [(ngModel)]="model3"
-        [ngbTypeahead]="search" [focusFirst]="false"
-        placeholder="Type 2+ characters to search..." />
-      <p class="text-muted small mt-1">Selected: {{ model3 }}</p>
-    </div>
-  `,
-  styles: [`:host { display: block; }`]
+  templateUrl: './typeahead-demo.html',
+  styleUrl: './typeahead-demo.sass'
 })
 export class TypeaheadDemo {
   model1: string = '';

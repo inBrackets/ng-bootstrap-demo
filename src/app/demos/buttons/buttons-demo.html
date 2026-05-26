@@ -1,0 +1,38 @@
+<h2 class="demo-title">Buttons</h2>
+<p class="text-muted mb-4">Toggle buttons — checkbox and radio-style button groups using Bootstrap's btn-check pattern.</p>
+
+<h5>Checkbox buttons</h5>
+<div class="mb-4">
+  <div class="btn-group" role="group">
+    <input type="checkbox" class="btn-check" id="btncheck1" [(ngModel)]="check1">
+    <label class="btn btn-outline-primary" for="btncheck1">Option A</label>
+
+    <input type="checkbox" class="btn-check" id="btncheck2" [(ngModel)]="check2">
+    <label class="btn btn-outline-primary" for="btncheck2">Option B</label>
+
+    <input type="checkbox" class="btn-check" id="btncheck3" [(ngModel)]="check3">
+    <label class="btn btn-outline-primary" for="btncheck3">Option C</label>
+  </div>
+  <p class="mt-2 text-muted small">Selected: A={{ check1 }}, B={{ check2 }}, C={{ check3 }}</p>
+</div>
+
+<h5>Radio buttons</h5>
+<div class="mb-4">
+  <div class="btn-group" role="group">
+    @for (opt of radioOptions; track opt) {
+      <input type="radio" class="btn-check" [id]="'radio-' + opt" name="radioBtns" [value]="opt" [(ngModel)]="radioSelected">
+      <label class="btn btn-outline-success" [for]="'radio-' + opt">{{ opt }}</label>
+    }
+  </div>
+  <p class="mt-2 text-muted small">Selected: {{ radioSelected }}</p>
+</div>
+
+<h5>Click toggle</h5>
+<div class="mb-4">
+  <button type="button" class="btn me-2"
+    [class.btn-primary]="singleToggle" [class.btn-outline-primary]="!singleToggle"
+    (click)="singleToggle = !singleToggle">
+    {{ singleToggle ? 'ON' : 'OFF' }}
+  </button>
+  <span class="text-muted small">State: {{ singleToggle }}</span>
+</div>

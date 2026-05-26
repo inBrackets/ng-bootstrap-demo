@@ -4,48 +4,8 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-progress-demo',
   imports: [NgbProgressbarModule],
-  template: `
-    <h2 class="demo-title">Progress</h2>
-    <p class="text-muted mb-4">Provide up-to-date feedback on the progress of a workflow or action.</p>
-
-    <h5>Basic</h5>
-    <div class="mb-4">
-      @for (bar of bars; track bar.type) {
-        <ngb-progressbar [type]="bar.type" [value]="bar.value" class="mb-2">
-        </ngb-progressbar>
-      }
-    </div>
-
-    <h5>With label</h5>
-    <div class="mb-4">
-      <ngb-progressbar type="success" [value]="75" [showValue]="true" class="mb-2"></ngb-progressbar>
-      <ngb-progressbar type="info" [value]="45" class="mb-2">45%</ngb-progressbar>
-    </div>
-
-    <h5>Striped &amp; animated</h5>
-    <div class="mb-4">
-      <ngb-progressbar type="warning" [value]="60" [striped]="true" class="mb-2"></ngb-progressbar>
-      <ngb-progressbar type="danger" [value]="80" [striped]="true" [animated]="true" class="mb-2"></ngb-progressbar>
-    </div>
-
-    <h5>Height variants</h5>
-    <div class="mb-4">
-      <ngb-progressbar type="primary" [value]="50" height="4px" class="mb-2"></ngb-progressbar>
-      <ngb-progressbar type="primary" [value]="50" height="10px" class="mb-2"></ngb-progressbar>
-      <ngb-progressbar type="primary" [value]="50" height="20px" class="mb-2"></ngb-progressbar>
-    </div>
-
-    <h5>Interactive</h5>
-    <div class="mb-4">
-      <ngb-progressbar type="primary" [value]="progress()" [showValue]="true" class="mb-3"></ngb-progressbar>
-      <div class="d-flex gap-2">
-        <button class="btn btn-sm btn-outline-danger" (click)="adjust(-10)">-10</button>
-        <button class="btn btn-sm btn-outline-success" (click)="adjust(10)">+10</button>
-        <button class="btn btn-sm btn-secondary" (click)="progress.set(0)">Reset</button>
-      </div>
-    </div>
-  `,
-  styles: [`:host { display: block; }`]
+  templateUrl: './progress-demo.html',
+  styleUrl: './progress-demo.sass'
 })
 export class ProgressDemo {
   bars = [

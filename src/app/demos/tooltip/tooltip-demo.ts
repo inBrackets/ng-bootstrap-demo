@@ -4,61 +4,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-tooltip-demo',
   imports: [NgbTooltipModule],
-  template: `
-    <h2 class="demo-title">Tooltip</h2>
-    <p class="text-muted mb-4">Simple tooltips that appear on hover.</p>
-
-    <h5>Placements</h5>
-    <div class="mb-4 d-flex gap-2 flex-wrap">
-      @for (pos of placements; track pos) {
-        <button type="button" class="btn btn-outline-secondary"
-          [ngbTooltip]="'Tooltip on ' + pos" [placement]="pos">
-          {{ pos }}
-        </button>
-      }
-    </div>
-
-    <h5>Triggers</h5>
-    <div class="mb-4 d-flex gap-3 flex-wrap align-items-center">
-      <button type="button" class="btn btn-primary"
-        ngbTooltip="Hover tooltip" triggers="mouseenter:mouseleave">
-        Hover
-      </button>
-      <button type="button" class="btn btn-success"
-        ngbTooltip="Click tooltip" triggers="click">
-        Click
-      </button>
-      <button type="button" class="btn btn-warning"
-        ngbTooltip="Focus tooltip" triggers="focus">
-        Focus (tab to me)
-      </button>
-      <button type="button" class="btn btn-secondary"
-        ngbTooltip="Manual tooltip" triggers="manual" #t="ngbTooltip"
-        (click)="t.toggle()">
-        Manual toggle
-      </button>
-    </div>
-
-    <h5>HTML content &amp; custom class</h5>
-    <div class="mb-4">
-      <button type="button" class="btn btn-info"
-        [ngbTooltip]="htmlTip" tooltipClass="custom-tooltip">
-        Rich tooltip
-      </button>
-      <ng-template #htmlTip>
-        <strong>Bold</strong> and <em>italic</em> content
-      </ng-template>
-    </div>
-
-    <h5>On other elements</h5>
-    <div class="mb-4 d-flex gap-3 flex-wrap align-items-center">
-      <span ngbTooltip="Tooltip on a span" class="badge bg-primary p-2" style="cursor:default">Badge</span>
-      <a href="#" ngbTooltip="Tooltip on a link" (click)="$event.preventDefault()">Hover this link</a>
-      <input type="text" class="form-control" style="width:200px"
-        ngbTooltip="This field is required" placeholder="Input with tooltip">
-    </div>
-  `,
-  styles: [`:host { display: block; }`]
+  templateUrl: './tooltip-demo.html',
+  styleUrl: './tooltip-demo.sass'
 })
 export class TooltipDemo {
   placements = ['top', 'bottom', 'start', 'end', 'top-start', 'top-end'];

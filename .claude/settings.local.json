@@ -14,7 +14,12 @@
       "Read(//c/Program Files \\(x86\\)/Microsoft/Edge/Application//**)",
       "Bash(xargs grep -l \"NgbAlert\")",
       "Bash(xargs -I{} sh -c 'echo \"=== {} ===\" && cat \"{}\"')",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('scripts',{}\\)\\)\")",
+      "Bash(npm start *)",
+      "Bash(curl -s http://localhost:4201/)",
+      "Bash(powershell *)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }

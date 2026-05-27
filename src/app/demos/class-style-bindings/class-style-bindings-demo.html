@@ -1,0 +1,305 @@
+<h2 class="demo-title">Class &amp; Style Bindings</h2>
+<p class="text-muted mb-4">
+  Angular lets you bind CSS classes and inline styles directly to component state — no manual DOM
+  manipulation needed. Brackets <code>[...]</code> mean "evaluate this as JavaScript and use the result."
+</p>
+
+<div class="row g-4">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 1 — [class.someClass]="boolean"
+       The simplest form: toggle ONE class based on a true/false value.
+       Syntax: [class.THE-CLASS-NAME]="expression that returns true or false"
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        1 — Single class: <code>[class.highlighted]="isHighlighted()"</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          When the expression is <strong>true</strong> the class is added; when <strong>false</strong> it is removed.
+          Angular handles the DOM update for you.
+        </p>
+
+        <!-- [class.highlighted] checks isHighlighted().
+             If true  → element gets class="highlighted"
+             If false → class is absent entirely -->
+        <div class="demo-box" [class.highlighted]="isHighlighted()">
+          {{ isHighlighted() ? 'I am highlighted!' : 'I have no highlight.' }}
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Clicking the button flips the signal value with .set() -->
+          <button class="btn btn-outline-primary btn-sm"
+                  (click)="isHighlighted.set(!isHighlighted())">
+            Toggle highlight
+          </button>
+          <code class="small">isHighlighted() = {{ isHighlighted() }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 2 — [class]="object"
+       Bind an object whose keys are class names and values are booleans.
+       Angular applies every key whose value is truthy.
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        2 — Object syntax: <code>[class]="alertClasses()"</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Pass an object — Angular adds classes whose values are <code>true</code> and removes the rest.
+          Great when several classes are mutually exclusive (like alert colours).
+        </p>
+
+        <!-- alertClasses() is a computed() that returns:
+             { alert: true, alert-success: ..., alert-warning: ..., alert-danger: ... }
+             Angular applies 'alert' always, and whichever colour matches alertType(). -->
+        <div [class]="alertClasses()" role="alert">
+          Alert type is: <strong>{{ alertType() }}</strong>
+        </div>
+
+        <div class="btn-group btn-group-sm">
+          <!-- Each button sets alertType to a different value, which triggers alertClasses() to recompute -->
+          <button class="btn btn-outline-success"
+                  [class.active]="alertType() === 'success'"
+                  (click)="alertType.set('success')">success</button>
+          <button class="btn btn-outline-warning"
+                  [class.active]="alertType() === 'warning'"
+                  (click)="alertType.set('warning')">warning</button>
+          <button class="btn btn-outline-danger"
+                  [class.active]="alertType() === 'danger'"
+                  (click)="alertType.set('danger')">danger</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 3 — [class]="object" from multiple toggles
+       Shows how computed() keeps the class object in sync with
+       several independent boolean signals.
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        3 — Multiple classes from checkboxes
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Each checkbox controls one signal. A <code>computed()</code> builds the class object from all three —
+          Angular re-evaluates it whenever any signal changes.
+        </p>
+
+        <!-- textFormatClasses() returns the object with fw-bold / fst-italic / text-decoration-underline -->
+        <p class="demo-text" [class]="textFormatClasses()">
+          The quick brown fox jumps over the lazy dog.
+        </p>
+
+        <div class="d-flex gap-3 flex-wrap">
+          <!-- Each form-check binds its checked state to a signal and updates it on change -->
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="boldCb"
+                   [checked]="bold()"
+                   (change)="bold.set($any($event.target).checked)">
+            <label class="form-check-label" for="boldCb">Bold</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="italicCb"
+                   [checked]="italic()"
+                   (change)="italic.set($any($event.target).checked)">
+            <label class="form-check-label" for="italicCb">Italic</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="underlineCb"
+                   [checked]="underline()"
+                   (change)="underline.set($any($event.target).checked)">
+            <label class="form-check-label" for="underlineCb">Underline</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 4 — [style.property]="value"
+       Bind a single CSS property to a signal value.
+       Syntax: [style.css-property-name]="expression"
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        4 — Single style: <code>[style.color]="textColor()"</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          <code>[style.color]</code> sets only the color property. Angular converts the value to
+          <code>style="color: …"</code> on the element.
+        </p>
+
+        <!-- [style.color] reads textColor() — a hex string like "#0d6efd" -->
+        <p class="demo-text fw-semibold" [style.color]="textColor()">
+          This text colour is controlled by a signal.
+        </p>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <!-- Buttons that set the signal to a different hex value -->
+          <button class="btn btn-sm" style="background:#0d6efd;color:#fff" (click)="textColor.set('#0d6efd')">Blue</button>
+          <button class="btn btn-sm" style="background:#198754;color:#fff" (click)="textColor.set('#198754')">Green</button>
+          <button class="btn btn-sm" style="background:#dc3545;color:#fff" (click)="textColor.set('#dc3545')">Red</button>
+          <button class="btn btn-sm" style="background:#fd7e14;color:#fff" (click)="textColor.set('#fd7e14')">Orange</button>
+          <!-- A colour picker lets the user pick any colour freely -->
+          <input type="color" class="form-control form-control-color form-control-sm"
+                 [value]="textColor()"
+                 (input)="textColor.set($any($event.target).value)">
+        </div>
+        <code class="small">textColor() = "{{ textColor() }}"</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 5 — [style.property.unit]="number"
+       When a CSS property expects a unit (px, %, em…) you can
+       include it as a third segment. Angular appends it automatically.
+       Syntax: [style.font-size.px]="numberExpression"
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        5 — Style with unit: <code>[style.font-size.px]="fontSize()"</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Adding <code>.px</code> (or <code>.%</code>, <code>.em</code> etc.) after the property name means
+          you store a plain number in your signal — no string concatenation needed.
+        </p>
+
+        <!-- Angular will render this as style="font-size: <value>px" -->
+        <p class="demo-text" [style.font-size.px]="fontSize()">
+          Drag the slider to resize me!
+        </p>
+
+        <div class="d-flex align-items-center gap-3">
+          <input type="range" class="form-range"
+                 min="10" max="48" step="1"
+                 [value]="fontSize()"
+                 (input)="fontSize.set(+$any($event.target).value)">
+          <code class="small text-nowrap">{{ fontSize() }}px</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 6 — [style]="object" (multiple styles at once)
+       Pass a style object — keys are camelCase property names,
+       values are strings (or numbers if you append the unit in the key).
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        6 — Object syntax: <code>[style]="boxStyle()"</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Return a plain object from <code>computed()</code>. Angular applies every property in it
+          directly to the element's <code>style</code> attribute.
+        </p>
+
+        <!-- boxStyle() is a computed() returning { backgroundColor, padding, borderRadius, transition } -->
+        <div class="demo-box" [style]="boxStyle()">
+          My background, padding and border-radius are all style-bound.
+        </div>
+
+        <div class="row g-2">
+          <div class="col-12">
+            <label class="form-label small mb-1">Background colour</label>
+            <input type="color" class="form-control form-control-color form-control-sm"
+                   [value]="bgColor()"
+                   (input)="bgColor.set($any($event.target).value)">
+          </div>
+          <div class="col-6">
+            <label class="form-label small mb-1">Padding: {{ padding() }}px</label>
+            <input type="range" class="form-range" min="4" max="48"
+                   [value]="padding()"
+                   (input)="padding.set(+$any($event.target).value)">
+          </div>
+          <div class="col-6">
+            <label class="form-label small mb-1">Radius: {{ borderRadius() }}px</label>
+            <input type="range" class="form-range" min="0" max="48"
+                   [value]="borderRadius()"
+                   (input)="borderRadius.set(+$any($event.target).value)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 7 — Combining class + style bindings
+       Both [class] and [style] can live on the same element.
+       Angular merges them without conflict.
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header fw-semibold">
+        7 — Class &amp; style together: a live status card
+      </div>
+      <div class="card-body">
+        <p class="text-muted small mb-3">
+          A single element can have both <code>[class]</code> and <code>[style]</code> at the same time.
+          Computed signals keep both in sync with one shared piece of state (<code>cardStatus</code>).
+        </p>
+
+        <div class="row g-3 align-items-start">
+          <div class="col-md-6">
+            <!-- [class] and [style] are independent bindings on the same element.
+                 statusCardClasses() controls which border colour appears.
+                 statusCardStyle()   controls opacity and scale. -->
+            <div [class]="statusCardClasses()" [style]="statusCardStyle()">
+              <div class="card-body">
+                <h5 class="card-title">Status Card</h5>
+                <p class="card-text">{{ statusLabel() }}</p>
+                <span class="badge"
+                      [class.bg-secondary]="cardStatus() === 'default'"
+                      [class.bg-warning]="cardStatus() === 'loading'"
+                      [class.bg-success]="cardStatus() === 'success'"
+                      [class.bg-danger]="cardStatus() === 'error'">
+                  {{ cardStatus() }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 d-flex flex-column gap-2">
+            <p class="text-muted small mb-0">Set <code>cardStatus</code> to see both bindings react:</p>
+            <!-- Each button updates the shared cardStatus signal;
+                 both computed()s re-run automatically -->
+            <div class="btn-group-vertical w-100" role="group">
+              <button class="btn btn-outline-secondary btn-sm"
+                      [class.active]="cardStatus() === 'default'"
+                      (click)="cardStatus.set('default')">default</button>
+              <button class="btn btn-outline-warning btn-sm"
+                      [class.active]="cardStatus() === 'loading'"
+                      (click)="cardStatus.set('loading')">loading</button>
+              <button class="btn btn-outline-success btn-sm"
+                      [class.active]="cardStatus() === 'success'"
+                      (click)="cardStatus.set('success')">success</button>
+              <button class="btn btn-outline-danger btn-sm"
+                      [class.active]="cardStatus() === 'error'"
+                      (click)="cardStatus.set('error')">error</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

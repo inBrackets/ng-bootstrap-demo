@@ -1,0 +1,33 @@
+:host
+  display: block
+
+// ── Example boxes ───────────────────────────────────────────────────────────
+
+.demo-box
+  padding: 1rem
+  border: 2px dashed #dee2e6
+  border-radius: 6px
+  text-align: center
+  transition: all 0.25s ease
+  background: #f8f9fa
+
+  // .highlighted is applied/removed by [class.highlighted]="isHighlighted()"
+  &.highlighted
+    background: #fff3cd
+    border-color: #ffc107
+    color: #664d03
+    font-weight: 600
+
+.demo-text
+  font-size: 1rem
+  line-height: 1.6
+  padding: 0.5rem 0
+
+// ── Section 7 status card ────────────────────────────────────────────────────
+
+.status-card
+  border-width: 2px
+  border-style: solid
+  border-color: #dee2e6
+  border-radius: 8px
+  min-height: 140px

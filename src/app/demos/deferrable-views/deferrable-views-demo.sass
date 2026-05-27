@@ -1,0 +1,199 @@
+:host
+  display: block
+
+// ── Lifecycle diagram ───────────────────────────────────────────────────────
+
+.lifecycle-row
+  display: flex
+  align-items: stretch
+  gap: 0.5rem
+  flex-wrap: wrap
+
+.lifecycle-step
+  flex: 1
+  min-width: 140px
+  border-radius: 8px
+  padding: 0.75rem 1rem
+  display: flex
+  flex-direction: column
+  gap: 0.25rem
+
+  .step-label
+    font-family: monospace
+    font-weight: 600
+    font-size: 0.85rem
+
+  .step-desc
+    font-size: 0.78rem
+    opacity: 0.85
+
+.step-placeholder
+  background: #e8f4fd
+  border: 1px solid #90cdf4
+  .step-label
+    color: #2b6cb0
+
+.step-loading
+  background: #fef9e7
+  border: 1px solid #f6d860
+  .step-label
+    color: #975a16
+
+.step-content
+  background: #f0fff4
+  border: 1px solid #9ae6b4
+  .step-label
+    color: #276749
+
+.step-error
+  background: #fff5f5
+  border: 1px solid #feb2b2
+  .step-label
+    color: #c53030
+
+.lifecycle-arrow
+  display: flex
+  align-items: center
+  font-size: 1.25rem
+  color: #adb5bd
+  padding: 0 0.25rem
+
+// ── Placeholder boxes ────────────────────────────────────────────────────────
+
+.defer-placeholder
+  border-radius: 8px
+  padding: 1.5rem
+  text-align: center
+  cursor: pointer
+  transition: filter 0.15s ease
+
+  &:hover
+    filter: brightness(0.96)
+
+.interact-placeholder
+  border: 2px dashed #0d6efd
+  background: #eef3ff
+  color: #0d6efd
+
+.hover-placeholder
+  border: 2px dashed #6f42c1
+  background: #f5f0ff
+  color: #6f42c1
+
+.timer-placeholder
+  border: 2px dashed #fd7e14
+  background: #fff5ec
+  color: #c44f05
+  cursor: default
+
+.when-placeholder
+  border: 2px dashed #20c997
+  background: #f0fffe
+  color: #0d9488
+
+.viewport-placeholder
+  border: 2px dashed #198754
+  background: #f0fff4
+  color: #198754
+  cursor: default
+
+// ── Loading state ────────────────────────────────────────────────────────────
+
+.defer-loading
+  border: 2px dashed #dee2e6
+  border-radius: 8px
+  padding: 1.5rem
+  background: #f8f9fa
+  color: #6c757d
+
+// ── Error state ──────────────────────────────────────────────────────────────
+
+.defer-error
+  border: 1px solid #f5c6cb
+  background: #fff5f5
+  border-radius: 8px
+  padding: 1rem
+  color: #721c24
+  font-size: 0.9rem
+
+// ── Loaded result cards ──────────────────────────────────────────────────────
+
+.result-card
+  border-radius: 8px
+  padding: 1.25rem
+  border-width: 2px
+  border-style: solid
+  animation: fadeSlideIn 0.35s ease
+
+.result-primary
+  border-color: #0d6efd
+  background: #f0f4ff
+
+.result-purple
+  border-color: #6f42c1
+  background: #f9f5ff
+
+.result-orange
+  border-color: #fd7e14
+  background: #fff8f0
+
+.result-teal
+  border-color: #20c997
+  background: #f0fffe
+
+.result-success
+  border-color: #198754
+  background: #f0fff4
+
+@keyframes fadeSlideIn
+  from
+    opacity: 0
+    transform: translateY(6px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+// ── Custom badge & spinner colours ───────────────────────────────────────────
+
+.badge.bg-purple
+  background-color: #6f42c1 !important
+
+.badge.bg-orange
+  background-color: #fd7e14 !important
+
+.badge.bg-teal
+  background-color: #20c997 !important
+  color: #fff
+
+.spinner-border.text-purple
+  color: #6f42c1 !important
+
+.spinner-border.text-orange
+  color: #fd7e14 !important
+
+.spinner-border.text-teal
+  color: #20c997 !important
+
+.btn-outline-teal
+  color: #20c997
+  border-color: #20c997
+
+  &:hover:not(:disabled)
+    background: #20c997
+    color: #fff
+
+  &:disabled
+    opacity: 0.5
+
+// ── Prefetch cards ────────────────────────────────────────────────────────────
+
+.prefetch-card
+  border: 1px solid #dee2e6
+  border-radius: 8px
+  padding: 1rem
+  background: #f8f9fa
+  height: 100%
+
+  code
+    font-size: 0.8rem
+    color: #495057

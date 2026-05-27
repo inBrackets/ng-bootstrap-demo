@@ -19,7 +19,11 @@
       "Bash(npm start *)",
       "Bash(curl -s http://localhost:4201/)",
       "Bash(powershell *)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(pkill -f \"ng serve\")",
+      "Bash(curl -s http://localhost:4202/)",
+      "Bash(curl -s http://localhost:4202/deferrable-views)",
+      "Bash(curl -s http://localhost:4203/)"
     ]
   }
 }

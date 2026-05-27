@@ -49,6 +49,14 @@ export class Navbar {
       ]
     },
     {
+      name: 'Angular',
+      items: [
+        { label: 'Signal Forms', route: '/signal-forms', icon: 'bi-lightning-charge' },
+        { label: 'Class & Style', route: '/class-style-bindings', icon: 'bi-palette' },
+        { label: 'Deferrable Views', route: '/deferrable-views', icon: 'bi-hourglass-split' },
+      ]
+    },
+    {
       name: 'Forms',
       items: [
         { label: 'Buttons', route: '/buttons', icon: 'bi-hand-index' },
@@ -56,8 +64,6 @@ export class Navbar {
         { label: 'Datepicker', route: '/datepicker', icon: 'bi-calendar3' },
         { label: 'Timepicker', route: '/timepicker', icon: 'bi-clock' },
         { label: 'Typeahead', route: '/typeahead', icon: 'bi-search' },
-        { label: 'Signal Forms', route: '/signal-forms', icon: 'bi-lightning-charge' },
-        { label: 'Class & Style', route: '/class-style-bindings', icon: 'bi-palette' },
       ]
     },
   ];

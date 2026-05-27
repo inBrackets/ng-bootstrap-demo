@@ -1,0 +1,416 @@
+<h2 class="demo-title">Deferrable Views <code>&#64;defer</code></h2>
+<p class="text-muted mb-2">
+  <code>&#64;defer</code> lazy-loads a piece of your template — and all the components inside it — only when it's
+  actually needed. The browser skips downloading, parsing and compiling that JavaScript until the
+  trigger fires, speeding up the initial page load.
+</p>
+<p class="text-muted mb-4">
+  Every <code>&#64;defer</code> block has three optional companion blocks that control what the user sees
+  at each stage of the lifecycle:
+</p>
+
+<!-- ── Lifecycle flow diagram ─────────────────────────────────────────────── -->
+<div class="lifecycle-row mb-4">
+  <div class="lifecycle-step step-placeholder">
+    <span class="step-label">&#64;placeholder</span>
+    <span class="step-desc">Shown immediately. Removed when the trigger fires.</span>
+  </div>
+  <div class="lifecycle-arrow">→</div>
+  <div class="lifecycle-step step-loading">
+    <span class="step-label">&#64;loading</span>
+    <span class="step-desc">Shown while content is being downloaded.</span>
+  </div>
+  <div class="lifecycle-arrow">→</div>
+  <div class="lifecycle-step step-content">
+    <span class="step-label">&#64;defer content</span>
+    <span class="step-desc">Rendered once loading is complete.</span>
+  </div>
+  <div class="lifecycle-arrow">→</div>
+  <div class="lifecycle-step step-error">
+    <span class="step-label">&#64;error</span>
+    <span class="step-desc">Rendered if downloading failed.</span>
+  </div>
+</div>
+
+<div class="row g-4">
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXAMPLE 1 — on interaction
+       The defer block loads when the user clicks or presses a key while
+       the @placeholder element is focused.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        1 — <code>&#64;defer (on interaction)</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Trigger: the user <strong>clicks or presses a key</strong> on the placeholder.
+          Nothing is downloaded until that moment.
+        </p>
+
+        <!--
+          @defer (on interaction)
+          Angular watches the @placeholder for a click / keydown event.
+          The moment one fires it tears down the placeholder, starts
+          fetching the deferred chunk, shows @loading while waiting,
+          then swaps in the real content.
+
+          @loading (minimum 800ms)
+          "minimum 800ms" keeps the spinner visible for at least 800 ms
+          even if the download finishes faster — avoids a jarring flash.
+        -->
+        @defer (on interaction) {
+          <div class="result-card result-primary">
+            <span class="badge bg-primary mb-2">on interaction</span>
+            <h6>Content loaded!</h6>
+            <p class="small text-muted mb-0">
+              Angular downloaded and rendered this block only after you interacted with the placeholder.
+              In a real app you would put a heavy component (chart, editor, map…) here.
+            </p>
+          </div>
+        } @placeholder {
+          <!-- @placeholder is visible before any trigger fires -->
+          <div class="defer-placeholder interact-placeholder">
+            <i class="bi bi-cursor-fill fs-2"></i>
+            <p class="fw-semibold mb-0 mt-2">Click here to load</p>
+            <p class="small text-muted mb-0">(&#64;placeholder block)</p>
+          </div>
+        } @loading (minimum 800ms) {
+          <!-- @loading replaces the placeholder while the chunk downloads -->
+          <div class="defer-loading text-center">
+            <div class="spinner-border spinner-border-sm text-primary"></div>
+            <p class="small mt-2 mb-0">Loading… (&#64;loading block)</p>
+          </div>
+        } @error {
+          <!-- @error is shown if the download itself fails (e.g. no internet) -->
+          <div class="defer-error">
+            <i class="bi bi-exclamation-triangle-fill text-danger me-1"></i>
+            Failed to load content. (&#64;error block)
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXAMPLE 2 — on hover
+       Fires when the mouse pointer enters the placeholder area.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        2 — <code>&#64;defer (on hover)</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Trigger: the cursor <strong>moves over</strong> the placeholder. Great for tooltips,
+          preview panels, or any secondary info the user might not need.
+        </p>
+
+        <!--
+          @defer (on hover)
+          Listens for mouseenter on the @placeholder element.
+          Useful when loading something the user is "about to need"
+          without forcing them to click.
+        -->
+        @defer (on hover) {
+          <div class="result-card result-purple">
+            <span class="badge bg-purple mb-2">on hover</span>
+            <h6>Hover content loaded!</h6>
+            <p class="small text-muted mb-0">
+              The download started the moment your cursor entered the placeholder.
+              You can pair this with <code>prefetch on idle</code> to start the download
+              even earlier (see the Prefetch card below).
+            </p>
+          </div>
+        } @placeholder {
+          <div class="defer-placeholder hover-placeholder">
+            <i class="bi bi-hand-index-fill fs-2"></i>
+            <p class="fw-semibold mb-0 mt-2">Hover to load</p>
+            <p class="small text-muted mb-0">(&#64;placeholder block)</p>
+          </div>
+        } @loading (minimum 800ms) {
+          <div class="defer-loading text-center">
+            <div class="spinner-border spinner-border-sm text-purple"></div>
+            <p class="small mt-2 mb-0">Loading…</p>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXAMPLE 3 — on timer
+       Loads automatically after the specified delay. No user action needed.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        3 — <code>&#64;defer (on timer(4s))</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Trigger: a <strong>fixed delay</strong> after the component first renders. Useful for
+          non-critical widgets (chat bubbles, cookie banners) that should not slow down the initial paint.
+        </p>
+
+        <!--
+          @defer (on timer(4s))
+          The timer starts when this component is first initialised.
+          After 4 seconds Angular fetches and renders the deferred content
+          regardless of what the user is doing.
+
+          @loading (after 100ms; minimum 700ms)
+          "after 100ms" — don't show the spinner if loading finishes in under 100 ms.
+          "minimum 700ms" — if we do show the spinner, keep it for at least 700 ms.
+        -->
+        @defer (on timer(4s)) {
+          <div class="result-card result-orange">
+            <span class="badge bg-orange mb-2">on timer</span>
+            <h6>Timer fired!</h6>
+            <p class="small text-muted mb-0">
+              This content loaded 4 seconds after the component was initialised — no user action required.
+              Navigate away and back to reset the timer and watch it again.
+            </p>
+          </div>
+        } @placeholder {
+          <div class="defer-placeholder timer-placeholder">
+            <i class="bi bi-alarm fs-2"></i>
+            <p class="fw-semibold mb-0 mt-2">Loading in 4 s…</p>
+            <p class="small text-muted mb-0">(&#64;placeholder block)</p>
+          </div>
+        } @loading (after 100ms; minimum 700ms) {
+          <div class="defer-loading text-center">
+            <div class="spinner-border spinner-border-sm text-orange"></div>
+            <p class="small mt-2 mb-0">Loading…</p>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXAMPLE 4 — when condition
+       Loads when an expression (usually a signal call) becomes truthy.
+       Unlike the other triggers this is fully under your control.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">
+        4 — <code>&#64;defer (when loadOnDemand())</code>
+      </div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Trigger: a JavaScript <strong>expression becomes true</strong>. You control exactly when loading
+          starts — e.g. after the user logs in, a feature flag is enabled, or a wizard step is complete.
+        </p>
+
+        <!--
+          @defer (when loadOnDemand())
+          Angular re-evaluates the expression on every change detection run.
+          The first time it returns true the fetch starts.
+          Setting loadOnDemand back to false afterwards has no effect —
+          the content stays rendered once it has loaded.
+        -->
+        @defer (when loadOnDemand()) {
+          <div class="result-card result-teal">
+            <span class="badge bg-teal mb-2">when condition</span>
+            <h6>Condition was met!</h6>
+            <p class="small text-muted mb-0">
+              <code>loadOnDemand()</code> returned <code>true</code> so Angular loaded this block.
+              Setting it back to <code>false</code> won't unload the content — <code>&#64;defer</code> is one-way.
+            </p>
+          </div>
+        } @placeholder {
+          <div class="defer-placeholder when-placeholder">
+            <i class="bi bi-toggle-off fs-2"></i>
+            <p class="fw-semibold mb-0 mt-2">Waiting for condition…</p>
+            <p class="small text-muted mb-0">(&#64;placeholder block)</p>
+          </div>
+        } @loading (minimum 800ms) {
+          <div class="defer-loading text-center">
+            <div class="spinner-border spinner-border-sm text-teal"></div>
+            <p class="small mt-2 mb-0">Loading…</p>
+          </div>
+        }
+
+        <!-- This button lives OUTSIDE the @defer block, so it is always rendered -->
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-sm btn-outline-teal"
+                  [disabled]="loadOnDemand()"
+                  (click)="loadOnDemand.set(true)">
+            Set condition = true
+          </button>
+          <code class="small">loadOnDemand() = {{ loadOnDemand() }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXAMPLE 5 — on viewport
+       Loads when the placeholder element scrolls into the visible area.
+       This is the most common pattern for below-the-fold content.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header fw-semibold">
+        5 — <code>&#64;defer (on viewport)</code>
+      </div>
+      <div class="card-body">
+        <p class="text-muted small mb-3">
+          Trigger: the placeholder element enters the browser's visible viewport (uses
+          <code>IntersectionObserver</code> under the hood). This is the highest-impact trigger —
+          content below the fold is never downloaded until the user actually scrolls to it.
+        </p>
+
+        <!--
+          @defer (on viewport)
+          Angular attaches an IntersectionObserver to the @placeholder element.
+          When it crosses the viewport boundary the download begins.
+          Ideal for comment sections, recommendations, footers, or any
+          content below the initial fold.
+        -->
+        @defer (on viewport) {
+          <div class="result-card result-success d-flex align-items-center gap-3">
+            <i class="bi bi-eye-fill fs-1 text-success flex-shrink-0"></i>
+            <div>
+              <span class="badge bg-success mb-1">on viewport</span>
+              <h6 class="mb-1">You scrolled here — content loaded!</h6>
+              <p class="small text-muted mb-0">
+                Angular used <code>IntersectionObserver</code> to detect that the placeholder
+                entered the viewport, then downloaded and rendered this block. Users who never
+                scroll here never download this JavaScript at all.
+              </p>
+            </div>
+          </div>
+        } @placeholder {
+          <div class="defer-placeholder viewport-placeholder text-center">
+            <i class="bi bi-arrows-expand fs-2"></i>
+            <p class="fw-semibold mb-1 mt-2">Scroll this into view to load</p>
+            <p class="small text-muted mb-0">
+              Angular monitors this element with <code>IntersectionObserver</code>.
+              The moment it enters the viewport the download starts. (&#64;placeholder block)
+            </p>
+          </div>
+        } @loading (after 100ms; minimum 700ms) {
+          <div class="defer-loading text-center py-3">
+            <div class="spinner-border text-success mb-2"></div>
+            <p class="mb-0">Loading below-the-fold content…</p>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       EXAMPLE 6 — prefetch
+       prefetch is a second trigger on the same @defer block.
+       It controls WHEN downloading starts; the main trigger controls
+       WHEN the content is rendered. They can be different.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="col-12">
+    <div class="card border-secondary">
+      <div class="card-header fw-semibold text-secondary">
+        6 — <code>prefetch</code>: separate "download" from "render"
+      </div>
+      <div class="card-body">
+        <p class="text-muted small mb-3">
+          Every trigger can have a companion <code>prefetch</code> trigger.
+          Prefetch starts the <em>download</em> early while the main trigger still controls
+          <em>when the content appears</em>. The result: near-instant rendering when the main
+          trigger fires because the JS is already cached in memory.
+        </p>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="prefetch-card">
+              <code class="d-block mb-2">
+                &#64;defer (on interaction;<br>
+                &nbsp;&nbsp;prefetch on idle)
+              </code>
+              <p class="small text-muted mb-0">
+                Download while the browser is idle, render on click.
+                Best for content that most users will eventually open.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="prefetch-card">
+              <code class="d-block mb-2">
+                &#64;defer (on interaction;<br>
+                &nbsp;&nbsp;prefetch on hover)
+              </code>
+              <p class="small text-muted mb-0">
+                Download when the cursor approaches, render on click.
+                Removes perceived latency for mouse users.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="prefetch-card">
+              <code class="d-block mb-2">
+                &#64;defer (on viewport;<br>
+                &nbsp;&nbsp;prefetch on idle)
+              </code>
+              <p class="small text-muted mb-0">
+                Download at idle, render only when scrolled to.
+                Content appears instantly when the user reaches it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quick reference ─────────────────────────────────────────────────── -->
+  <div class="col-12">
+    <div class="card bg-dark text-light border-0">
+      <div class="card-header fw-semibold border-secondary">Quick reference</div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p class="small text-secondary fw-semibold mb-2">TRIGGERS</p>
+            <table class="table table-dark table-sm mb-0">
+              <tbody>
+                <tr><td><code>on idle</code></td><td class="text-muted">Browser is idle (requestIdleCallback)</td></tr>
+                <tr><td><code>on viewport</code></td><td class="text-muted">Placeholder enters viewport</td></tr>
+                <tr><td><code>on interaction</code></td><td class="text-muted">Click or keydown on placeholder</td></tr>
+                <tr><td><code>on hover</code></td><td class="text-muted">Mouseenter on placeholder</td></tr>
+                <tr><td><code>on timer(Xs)</code></td><td class="text-muted">Fixed delay after first render</td></tr>
+                <tr><td><code>on immediate</code></td><td class="text-muted">As soon as possible after render</td></tr>
+                <tr><td><code>when expr</code></td><td class="text-muted">When expression becomes truthy</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <p class="small text-secondary fw-semibold mb-2">TIMING OPTIONS</p>
+            <table class="table table-dark table-sm mb-0">
+              <tbody>
+                <tr><td><code>&#64;loading (after Xms)</code></td><td class="text-muted">Delay before showing &#64;loading</td></tr>
+                <tr><td><code>&#64;loading (minimum Xms)</code></td><td class="text-muted">Min time &#64;loading is shown</td></tr>
+                <tr><td><code>&#64;placeholder (minimum Xms)</code></td><td class="text-muted">Min time &#64;placeholder is shown</td></tr>
+              </tbody>
+            </table>
+            <p class="small text-secondary fw-semibold mb-2 mt-3">COMPANION BLOCKS</p>
+            <table class="table table-dark table-sm mb-0">
+              <tbody>
+                <tr><td><code>&#64;placeholder</code></td><td class="text-muted">Shown before trigger fires</td></tr>
+                <tr><td><code>&#64;loading</code></td><td class="text-muted">Shown while downloading</td></tr>
+                <tr><td><code>&#64;error</code></td><td class="text-muted">Shown if download fails</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

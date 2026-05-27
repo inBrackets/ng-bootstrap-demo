@@ -16,6 +16,12 @@ export class ClassStyleBindingsDemo {
   // A plain signal holding a boolean. When true the class is added, when false it's removed.
   isHighlighted = signal(false);
 
+  toggleHighlight() {
+    //this.isHighlighted.set(true);
+    this.isHighlighted.set(!this.isHighlighted());
+    console.log('isHighlighted changed to:', this.isHighlighted());
+  }
+
   // Example 2 – [class]="object"
   // The object keys are CSS class names; the values decide whether each class is on or off.
   alertType = signal<'success' | 'warning' | 'danger'>('success');

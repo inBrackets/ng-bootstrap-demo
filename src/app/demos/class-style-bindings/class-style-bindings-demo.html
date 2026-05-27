@@ -32,7 +32,7 @@
         <div class="d-flex align-items-center gap-3">
           <!-- Clicking the button flips the signal value with .set() -->
           <button class="btn btn-outline-primary btn-sm"
-                  (click)="isHighlighted.set(!isHighlighted())">
+                  (click)="toggleHighlight()">
             Toggle highlight
           </button>
           <code class="small">isHighlighted() = {{ isHighlighted() }}</code>

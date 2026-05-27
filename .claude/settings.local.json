@@ -23,7 +23,9 @@
       "Bash(pkill -f \"ng serve\")",
       "Bash(curl -s http://localhost:4202/)",
       "Bash(curl -s http://localhost:4202/deferrable-views)",
-      "Bash(curl -s http://localhost:4203/)"
+      "Bash(curl -s http://localhost:4203/)",
+      "Bash(curl -s http://localhost:4204/)",
+      "Bash(curl -s http://localhost:4205/)"
     ]
   }
 }

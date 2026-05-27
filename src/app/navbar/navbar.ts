@@ -54,6 +54,7 @@ export class Navbar {
         { label: 'Signal Forms', route: '/signal-forms', icon: 'bi-lightning-charge' },
         { label: 'Class & Style', route: '/class-style-bindings', icon: 'bi-palette' },
         { label: 'Deferrable Views', route: '/deferrable-views', icon: 'bi-hourglass-split' },
+        { label: 'Control Flow', route: '/control-flow', icon: 'bi-signpost-split' },
       ]
     },
     {

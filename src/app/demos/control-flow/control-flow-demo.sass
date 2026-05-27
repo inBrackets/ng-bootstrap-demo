@@ -1,0 +1,297 @@
+:host
+  display: block
+
+// ── Section headers ──────────────────────────────────────────────────────────
+
+.section-header
+  display: flex
+  align-items: center
+  gap: 0.5rem
+  padding: 0.6rem 1rem
+  border-radius: 6px
+  font-weight: 700
+  font-size: 1rem
+
+.section-if
+  background: #e8f4fd
+  border-left: 4px solid #0d6efd
+  color: #0a58ca
+
+.section-for
+  background: #f0fff4
+  border-left: 4px solid #198754
+  color: #146c43
+
+.section-switch
+  background: #f5f0ff
+  border-left: 4px solid #6f42c1
+  color: #5a359a
+
+// ── Example 2: grade boxes ───────────────────────────────────────────────────
+
+.grade-box
+  display: flex
+  align-items: center
+  gap: 1rem
+  padding: 1rem 1.25rem
+  border-radius: 8px
+  font-weight: 600
+  animation: fadeIn 0.2s ease
+
+.grade-letter
+  font-size: 2rem
+  font-weight: 800
+  line-height: 1
+  width: 2.5rem
+  text-align: center
+
+.grade-a
+  background: #d4edda
+  border: 2px solid #c3e6cb
+  color: #155724
+
+.grade-b
+  background: #d1ecf1
+  border: 2px solid #bee5eb
+  color: #0c5460
+
+.grade-c
+  background: #fff3cd
+  border: 2px solid #ffeeba
+  color: #856404
+
+.grade-d
+  background: #ffe5cc
+  border: 2px solid #fbd1a1
+  color: #7d4e00
+
+.grade-f
+  background: #f8d7da
+  border: 2px solid #f5c6cb
+  color: #721c24
+
+// ── Example 3: profile card ──────────────────────────────────────────────────
+
+.profile-card
+  display: flex
+  align-items: center
+  gap: 1rem
+  padding: 1rem
+  background: #f0f4ff
+  border: 2px solid #c5d8ff
+  border-radius: 8px
+  animation: fadeIn 0.25s ease
+
+.avatar
+  width: 52px
+  height: 52px
+  border-radius: 50%
+  background: #0d6efd
+  color: white
+  font-weight: 700
+  font-size: 0.9rem
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+  letter-spacing: 0.5px
+
+.as-comparison
+  background: #f8f9fa
+  border-radius: 8px
+  padding: 1rem
+  border: 1px solid #dee2e6
+  height: 100%
+
+// ── Example 4: loop context variable table ───────────────────────────────────
+
+.loop-header
+  display: grid
+  grid-template-columns: 80px repeat(6, 1fr)
+  gap: 0.25rem
+  padding: 0.4rem 0.75rem
+  font-size: 0.78rem
+  border-bottom: 2px solid #dee2e6
+  font-weight: 600
+  color: #6c757d
+
+.loop-row
+  display: grid
+  grid-template-columns: 80px repeat(6, 1fr)
+  gap: 0.25rem
+  align-items: center
+  padding: 0.5rem 0.75rem
+  border-radius: 4px
+  font-size: 0.85rem
+  transition: background 0.1s
+
+.loop-even
+  background: #f0f4ff
+
+.loop-odd
+  background: #f8f9fa
+
+.loop-first
+  border-left: 3px solid #198754
+
+.loop-last
+  border-right: 3px solid #dc3545
+
+.loop-val
+  text-align: center
+  font-family: monospace
+  color: #6c757d
+
+.val-true
+  color: #198754
+  font-weight: 700
+
+// ── Example 5: task list ─────────────────────────────────────────────────────
+
+.task-list
+  display: flex
+  flex-direction: column
+  gap: 0.4rem
+  min-height: 80px
+
+.task-row
+  display: flex
+  align-items: center
+  gap: 0.75rem
+  padding: 0.5rem 0.75rem
+  border-radius: 6px
+  background: #f8f9fa
+  transition: background 0.15s
+
+  &:hover
+    background: #e9ecef
+
+.task-text
+  font-size: 0.9rem
+
+.task-done
+  text-decoration: line-through
+  color: #adb5bd
+
+// ── Example 6: tech stack nested for ─────────────────────────────────────────
+
+.tech-category
+  border: 1px solid #dee2e6
+  border-radius: 8px
+  overflow: hidden
+
+.tech-header
+  display: flex
+  align-items: center
+  gap: 0.5rem
+  padding: 0.5rem 0.75rem
+  background: #f8f9fa
+  font-weight: 600
+  font-size: 0.9rem
+  border-bottom: 1px solid #dee2e6
+
+.tech-item
+  display: flex
+  align-items: center
+  gap: 0.5rem
+  padding: 0.35rem 0.75rem
+  font-size: 0.875rem
+  border-bottom: 1px solid #f0f0f0
+
+  &:last-child
+    border-bottom: none
+
+// ── Example 7: order status cards ────────────────────────────────────────────
+
+.status-card
+  border-radius: 10px
+  padding: 1.5rem
+  border: 2px solid
+  text-align: center
+  animation: fadeIn 0.2s ease
+
+  h6
+    font-weight: 700
+    font-size: 1.1rem
+    margin-bottom: 0.25rem
+
+.status-pending
+  border-color: #ffc107
+  background: #fffbf0
+  color: #856404
+
+.status-processing
+  border-color: #0dcaf0
+  background: #f0fbff
+  color: #087990
+
+.status-shipped
+  border-color: #0d6efd
+  background: #f0f4ff
+  color: #0a58ca
+
+.status-delivered
+  border-color: #198754
+  background: #f0fff4
+  color: #146c43
+
+.status-cancelled
+  border-color: #dc3545
+  background: #fff5f5
+  color: #842029
+
+// ── Example 8: stars and rating feedback ──────────────────────────────────────
+
+.stars
+  display: flex
+  gap: 0.25rem
+  justify-content: center
+
+.rating-feedback
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 0.75rem 1rem
+  border-radius: 8px
+  font-weight: 600
+  font-size: 0.95rem
+  animation: fadeIn 0.2s ease
+
+.feedback-1
+  background: #f8d7da
+  color: #721c24
+
+.feedback-2
+  background: #ffe5cc
+  color: #7d4e00
+
+.feedback-3
+  background: #fff3cd
+  color: #856404
+
+.feedback-4
+  background: #d1ecf1
+  color: #0c5460
+
+.feedback-5
+  background: #d4edda
+  color: #155724
+
+// ── Shared empty state ───────────────────────────────────────────────────────
+
+.empty-state
+  text-align: center
+  padding: 1.5rem
+  color: #adb5bd
+  border: 2px dashed #dee2e6
+  border-radius: 8px
+
+// ── Animations ───────────────────────────────────────────────────────────────
+
+@keyframes fadeIn
+  from
+    opacity: 0
+    transform: translateY(4px)
+  to
+    opacity: 1
+    transform: translateY(0)

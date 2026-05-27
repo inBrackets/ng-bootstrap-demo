@@ -1,0 +1,507 @@
+<h2 class="demo-title">Control Flow: <code>&#64;if</code>, <code>&#64;for</code>, <code>&#64;switch</code></h2>
+<p class="text-muted mb-4">
+  Angular 17 replaced structural directives (<code>*ngIf</code>, <code>*ngFor</code>, <code>*ngSwitch</code>)
+  with built-in block syntax. The new blocks are faster, require no imports, and support extra features
+  like <code>&#64;empty</code> and the <code>as</code> alias.
+</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     @if SECTION
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="section-header section-if mb-4">
+  <i class="bi bi-signpost-split"></i>
+  <code>&#64;if</code> — conditional rendering
+</div>
+
+<div class="row g-4 mb-5">
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 1 — @if / @else
+       The simplest form: render one block when true, another when false.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">1 — <code>&#64;if</code> / <code>&#64;else</code></div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Angular renders the <code>&#64;if</code> block when the expression is
+          <strong>truthy</strong>, and the <code>&#64;else</code> block when it is
+          <strong>falsy</strong>. The other block is never created in the DOM.
+        </p>
+
+        <!--
+          @if (showAlert())
+          ──────────────────────────────────────────────────────────────────
+          If showAlert() returns true  → first block is in the DOM.
+          If showAlert() returns false → @else block is in the DOM.
+          Angular removes and recreates the DOM element when the signal changes.
+        -->
+        @if (showAlert()) {
+          <div class="alert alert-success d-flex align-items-center gap-2 mb-0" role="alert">
+            <i class="bi bi-check-circle-fill"></i>
+            This is rendered by the <code>&#64;if</code> block.
+          </div>
+        } @else {
+          <div class="alert alert-light text-muted d-flex align-items-center gap-2 mb-0" role="alert">
+            <i class="bi bi-dash-circle"></i>
+            This is rendered by the <code>&#64;else</code> block.
+          </div>
+        }
+
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-sm btn-outline-primary"
+                  (click)="showAlert.set(!showAlert())">
+            Toggle
+          </button>
+          <code class="small">showAlert() = {{ showAlert() }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 2 — @if / @else if / @else chain
+       Multiple exclusive branches: Angular picks the first one that matches.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">2 — <code>&#64;if</code> / <code>&#64;else if</code> / <code>&#64;else</code></div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          Chain as many <code>&#64;else if</code> branches as you need. Angular evaluates them
+          <strong>top-to-bottom</strong> and renders only the first match.
+        </p>
+
+        <!--
+          The chain is evaluated once per change detection cycle.
+          Only ONE block ever exists in the DOM at a time.
+          There is no "fall-through" — unlike a C-style switch statement.
+        -->
+        @if (score() >= 90) {
+          <div class="grade-box grade-a">
+            <span class="grade-letter">A</span>
+            <span>Excellent — score ≥ 90</span>
+          </div>
+        } @else if (score() >= 80) {
+          <div class="grade-box grade-b">
+            <span class="grade-letter">B</span>
+            <span>Good — score ≥ 80</span>
+          </div>
+        } @else if (score() >= 70) {
+          <div class="grade-box grade-c">
+            <span class="grade-letter">C</span>
+            <span>Average — score ≥ 70</span>
+          </div>
+        } @else if (score() >= 60) {
+          <div class="grade-box grade-d">
+            <span class="grade-letter">D</span>
+            <span>Below average — score ≥ 60</span>
+          </div>
+        } @else {
+          <div class="grade-box grade-f">
+            <span class="grade-letter">F</span>
+            <span>Failing — score &lt; 60</span>
+          </div>
+        }
+
+        <div class="d-flex align-items-center gap-3">
+          <input type="range" class="form-range" min="0" max="100" step="1"
+                 [value]="score()"
+                 (input)="score.set(+$any($event.target).value)">
+          <code class="small text-nowrap">score() = {{ score() }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 3 — @if (expression; as alias)
+       Captures the truthy value in a typed local variable.
+       Avoids calling the expression twice and gives a non-null type inside the block.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header fw-semibold">3 — <code>&#64;if (profile(); as p)</code> — the <code>as</code> alias</div>
+      <div class="card-body">
+        <div class="row g-4 align-items-start">
+          <div class="col-md-6">
+            <p class="text-muted small mb-3">
+              The <code>as</code> keyword binds the truthy result to a local variable.
+              Inside the block <code>p</code> is typed as the <em>non-null</em> version of
+              the expression — no optional chaining needed.
+              The <code>&#64;else</code> block renders when <code>profile()</code> is <code>null</code>.
+            </p>
+
+            <!--
+              @if (profile(); as p)
+              ──────────────────────────────────────────────────────────────
+              profile() returns null  →  falsy  →  @else renders
+              profile() returns object →  truthy →  @if renders and p === object
+              Inside the @if block TypeScript knows p is non-null.
+              This is equivalent to:
+                const p = profile();
+                if (p) { ... }
+            -->
+            @if (profile(); as p) {
+              <div class="profile-card">
+                <div class="avatar">{{ p.avatar }}</div>
+                <div>
+                  <div class="fw-semibold">{{ p.name }}</div>
+                  <div class="text-muted small">{{ p.role }}</div>
+                </div>
+              </div>
+            } @else {
+              <div class="empty-state">
+                <i class="bi bi-person-x fs-2"></i>
+                <p class="mt-2 mb-0">No profile loaded</p>
+              </div>
+            }
+
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-sm btn-primary" (click)="loadProfile()">Load profile</button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="clearProfile()" [disabled]="!profile()">Clear</button>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="as-comparison">
+              <p class="fw-semibold small mb-2">With <code>as p</code> (recommended):</p>
+              <ul class="small text-muted mb-3">
+                <li><code>profile()</code> is called <strong>once</strong></li>
+                <li><code>p</code> is typed as non-null inside the block</li>
+                <li>No <code>!.</code> non-null assertions needed</li>
+              </ul>
+              <p class="fw-semibold small mb-2">Without <code>as</code>:</p>
+              <ul class="small text-muted mb-0">
+                <li>You'd call <code>profile()</code> separately for each property</li>
+                <li>TypeScript still thinks it could be <code>null</code></li>
+                <li>You'd need <code>profile()!.name</code> or optional chaining everywhere</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end @if row -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     @for SECTION
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="section-header section-for mb-4">
+  <i class="bi bi-arrow-repeat"></i>
+  <code>&#64;for</code> — list rendering
+</div>
+
+<div class="row g-4 mb-5">
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 4 — loop context variables
+       $index, $first, $last, $even, $odd, $count are provided automatically.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header fw-semibold">4 — Loop context variables: <code>$index $first $last $even $odd $count</code></div>
+      <div class="card-body">
+        <p class="text-muted small mb-3">
+          Inside every <code>&#64;for</code> block Angular exposes six implicit variables — no imports or
+          declarations required. Use them directly in the template.
+          <code>track</code> is <strong>required</strong>: it tells Angular how to identify each item
+          so it can update only the changed rows instead of re-rendering the whole list.
+          For primitives use <code>track item</code>; for objects use <code>track item.id</code>.
+        </p>
+
+        <!--
+          @for (item of iterable; track uniqueKey)
+          ──────────────────────────────────────────────────────────────────
+          Angular iterates 'colors' and renders one row per value.
+          $index  — zero-based position in the list
+          $first  — true only for the first item
+          $last   — true only for the last item
+          $even   — true when $index is 0, 2, 4 …
+          $odd    — true when $index is 1, 3, 5 …
+          $count  — total number of items in the list (same for every row)
+        -->
+        <div class="loop-header">
+          <span>Item</span>
+          <span class="text-center"><code>$index</code></span>
+          <span class="text-center"><code>$first</code></span>
+          <span class="text-center"><code>$last</code></span>
+          <span class="text-center"><code>$even</code></span>
+          <span class="text-center"><code>$odd</code></span>
+          <span class="text-center"><code>$count</code></span>
+        </div>
+
+        @for (color of colors; track color) {
+          <div class="loop-row" [class.loop-even]="$even" [class.loop-odd]="$odd"
+               [class.loop-first]="$first" [class.loop-last]="$last">
+            <span class="fw-semibold">{{ color }}</span>
+            <span class="loop-val">{{ $index }}</span>
+            <span class="loop-val" [class.val-true]="$first">{{ $first }}</span>
+            <span class="loop-val" [class.val-true]="$last">{{ $last }}</span>
+            <span class="loop-val" [class.val-true]="$even">{{ $even }}</span>
+            <span class="loop-val" [class.val-true]="$odd">{{ $odd }}</span>
+            <span class="loop-val">{{ $count }}</span>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 5 — @for + @empty
+       @empty renders when the iterable has zero items. No separate boolean needed.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">5 — <code>&#64;for</code> + <code>&#64;empty</code></div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          <code>&#64;empty</code> renders automatically when the iterable is empty —
+          no <code>*ngIf="items.length === 0"</code> needed. Remove all tasks to see it.
+        </p>
+
+        <!--
+          @empty is a companion block to @for, similar to @else for @if.
+          It fires when the array (or signal) has zero items.
+          Angular switches between the list and @empty automatically.
+        -->
+        <div class="task-list">
+          @for (task of tasks(); track task.id) {
+            <div class="task-row">
+              <input type="checkbox" class="form-check-input flex-shrink-0"
+                     [checked]="task.done"
+                     (change)="toggleTask(task.id)">
+              <span class="task-text flex-grow-1" [class.task-done]="task.done">{{ task.text }}</span>
+              <button class="btn btn-sm btn-link text-danger p-0 flex-shrink-0"
+                      (click)="removeTask(task.id)">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+          } @empty {
+            <!-- @empty renders only when tasks() has no items -->
+            <div class="empty-state">
+              <i class="bi bi-inbox fs-2"></i>
+              <p class="mt-2 mb-0">No tasks — add one below.</p>
+            </div>
+          }
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-primary" (click)="addTask()">
+            <i class="bi bi-plus-lg me-1"></i>Add task
+          </button>
+          <code class="small align-self-center">{{ tasks().length }} items</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 6 — nested @for
+       The outer loop iterates groups; the inner loop iterates each group's items.
+       Each loop has its own independent context variables.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-lg-6">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">6 — Nested <code>&#64;for</code></div>
+      <div class="card-body">
+        <p class="text-muted small mb-3">
+          <code>&#64;for</code> blocks can be nested. Each level has its own
+          independent <code>$index</code>, <code>$first</code> etc. — they don't
+          interfere with each other.
+        </p>
+
+        <!--
+          Outer @for iterates 'techStack' (an array of categories).
+          Inner @for iterates 'group.items' (an array of strings).
+          Both loops use 'track' independently.
+          $first/$last in the outer loop refer to the category position;
+          $first/$last in the inner loop refer to the item position inside that category.
+        -->
+        <div class="d-flex flex-column gap-2">
+          @for (group of techStack; track group.category) {
+            <div class="tech-category">
+              <!-- Outer loop: one block per category -->
+              <div class="tech-header">
+                <i class="bi {{ group.icon }}"></i>
+                {{ group.category }}
+                <span class="badge bg-secondary ms-auto">{{ group.items.length }}</span>
+              </div>
+              <!-- Inner loop: one row per skill inside this category -->
+              @for (skill of group.items; track skill) {
+                <div class="tech-item">
+                  <i class="bi bi-check2 text-success"></i>
+                  {{ skill }}
+                  @if ($last) {
+                    <span class="ms-auto badge bg-light text-muted small">last</span>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- end @for row -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     @switch SECTION
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<div class="section-header section-switch mb-4">
+  <i class="bi bi-shuffle"></i>
+  <code>&#64;switch</code> — value switching
+</div>
+
+<div class="row g-4">
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 7 — @switch / @case / @default
+       Compares the expression to each @case with === (strict equality).
+       Only the first matching @case renders. @default is optional.
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">7 — <code>&#64;switch</code> / <code>&#64;case</code> / <code>&#64;default</code></div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          <code>&#64;switch</code> is cleaner than a long <code>&#64;if / &#64;else if</code> chain when you're
+          matching <strong>one expression against several fixed values</strong>.
+          Comparison is always <code>===</code>. There is no fall-through between cases.
+        </p>
+
+        <!--
+          @switch (orderStatus())
+          ──────────────────────────────────────────────────────────────────
+          Angular evaluates orderStatus() once and compares it to each @case.
+          Only the matching @case block is added to the DOM.
+          @default renders when no @case matches (like JavaScript's default:).
+          Note: @default is optional — you can omit it if you don't need a fallback.
+        -->
+        @switch (orderStatus()) {
+          @case ('pending') {
+            <div class="status-card status-pending">
+              <i class="bi bi-hourglass-split fs-2 mb-2"></i>
+              <h6>Pending</h6>
+              <p class="small mb-0">Your order is waiting to be confirmed.</p>
+            </div>
+          }
+          @case ('processing') {
+            <div class="status-card status-processing">
+              <i class="bi bi-gear-wide-connected fs-2 mb-2"></i>
+              <h6>Processing</h6>
+              <p class="small mb-0">We are preparing your package.</p>
+            </div>
+          }
+          @case ('shipped') {
+            <div class="status-card status-shipped">
+              <i class="bi bi-truck fs-2 mb-2"></i>
+              <h6>Shipped</h6>
+              <p class="small mb-0">Your package is on its way!</p>
+            </div>
+          }
+          @case ('delivered') {
+            <div class="status-card status-delivered">
+              <i class="bi bi-house-check fs-2 mb-2"></i>
+              <h6>Delivered</h6>
+              <p class="small mb-0">Package delivered. Enjoy!</p>
+            </div>
+          }
+          @default {
+            <!-- @default catches any value not matched above (here: 'cancelled') -->
+            <div class="status-card status-cancelled">
+              <i class="bi bi-x-circle fs-2 mb-2"></i>
+              <h6>Cancelled</h6>
+              <p class="small mb-0">This order has been cancelled.</p>
+            </div>
+          }
+        }
+
+        <!-- Buttons live outside @switch — always rendered regardless of status -->
+        <div class="btn-group btn-group-sm flex-wrap" role="group">
+          @for (s of statuses; track s) {
+            <button class="btn btn-outline-secondary"
+                    [class.active]="orderStatus() === s"
+                    (click)="orderStatus.set(s)">{{ s }}</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────────────────
+       EXAMPLE 8 — @switch on a number
+       Shows that @switch works on any type, not just strings.
+       Also demonstrates combining @switch with @for (star rendering).
+       ─────────────────────────────────────────────────────────────────────── -->
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-header fw-semibold">8 — <code>&#64;switch</code> on a number</div>
+      <div class="card-body d-flex flex-column gap-3">
+        <p class="text-muted small mb-0">
+          <code>&#64;switch</code> works on <em>any</em> value type — strings, numbers, booleans.
+          Here a number signal drives both a star display (using <code>&#64;for</code> + <code>&#64;if</code>)
+          and a feedback message (using <code>&#64;switch</code>).
+        </p>
+
+        <!-- Star icons rendered with @for + @if inside it -->
+        <div class="stars">
+          @for (n of [1,2,3,4,5]; track n) {
+            <!--
+              @if inside @for: for each position 1-5, show a filled star
+              when n <= rating(), otherwise an empty star.
+            -->
+            @if (n <= rating()) {
+              <i class="bi bi-star-fill text-warning fs-4"></i>
+            } @else {
+              <i class="bi bi-star text-secondary fs-4"></i>
+            }
+          }
+        </div>
+
+        <!-- @switch picks the feedback text based on the numeric rating -->
+        @switch (rating()) {
+          @case (1) {
+            <div class="rating-feedback feedback-1">
+              <i class="bi bi-emoji-frown-fill me-2"></i>Needs significant improvement
+            </div>
+          }
+          @case (2) {
+            <div class="rating-feedback feedback-2">
+              <i class="bi bi-emoji-neutral-fill me-2"></i>Below expectations
+            </div>
+          }
+          @case (3) {
+            <div class="rating-feedback feedback-3">
+              <i class="bi bi-emoji-smile-fill me-2"></i>Meets expectations
+            </div>
+          }
+          @case (4) {
+            <div class="rating-feedback feedback-4">
+              <i class="bi bi-emoji-laughing-fill me-2"></i>Exceeds expectations
+            </div>
+          }
+          @case (5) {
+            <div class="rating-feedback feedback-5">
+              <i class="bi bi-emoji-heart-eyes-fill me-2"></i>Outstanding!
+            </div>
+          }
+        }
+
+        <input type="range" class="form-range" min="1" max="5" step="1"
+               [value]="rating()"
+               (input)="rating.set(+$any($event.target).value)">
+        <code class="small text-center">rating() = {{ rating() }}</code>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end @switch row -->

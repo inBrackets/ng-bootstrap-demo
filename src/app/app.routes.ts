@@ -23,4 +23,5 @@ export const routes: Routes = [
   { path: 'signal-forms', loadComponent: () => import('./demos/signal-forms/signal-forms-demo').then(m => m.SignalFormsDemo) },
   { path: 'class-style-bindings', loadComponent: () => import('./demos/class-style-bindings/class-style-bindings-demo').then(m => m.ClassStyleBindingsDemo) },
   { path: 'deferrable-views', loadComponent: () => import('./demos/deferrable-views/deferrable-views-demo').then(m => m.DeferrableViewsDemo) },
+  { path: 'control-flow', loadComponent: () => import('./demos/control-flow/control-flow-demo').then(m => m.ControlFlowDemo) },
 ];
